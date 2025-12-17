@@ -2,7 +2,7 @@
 
 This repository contains a collection of starter templates for **HubFly** applications. Each template is a minimal, containerized application designed to be easily deployed using Docker.
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 hubfly-templates/
@@ -16,7 +16,7 @@ hubfly-templates/
 └── deploy.sh         # Automated deployment script
 ```
 
-## 🚀 Available Templates
+## Available Templates
 
 ### 1. Node.js
 A simple Express.js server running on port `3000`.
@@ -28,7 +28,7 @@ A simple Flask server running on port `8000`.
 - **Base Image:** `python:3.9-slim`
 - **Port:** 8000
 
-## 🛠️ Usage
+## Usage
 
 ### Prerequisites
 - [Docker](https://www.docker.com/get-started) installed.
@@ -53,7 +53,7 @@ Use the included `deploy.sh` script to automatically build, tag, and push all te
    - Build the image as `hubfly-template-<directory_name>`.
    - Push it to the configured Docker Hub repository
 
-## ➕ Adding a New Template
+## Adding a New Template
 
 To add a new language or framework:
 
