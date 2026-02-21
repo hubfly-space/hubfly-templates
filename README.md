@@ -37,6 +37,20 @@ A Next.js App Router template with API routes, server actions, tests, and image 
 - **Base Image:** `node:20-alpine`
 - **Port:** 3000
 
+### 4. Static HTML
+A minimal static website template.
+- **Base Image:** `nginx:alpine`
+- **Port:** 80
+
+## Docker Image Names
+
+The deployment script publishes these tags:
+
+- `bonheur15/hubfly-template-nodejs:latest`
+- `bonheur15/hubfly-template-python:latest`
+- `bonheur15/hubfly-template-nextjs:latest`
+- `bonheur15/hubfly-template-static-html:latest`
+
 ## Usage
 
 ### Prerequisites
@@ -57,10 +71,10 @@ Use the included `deploy.sh` script to automatically build, tag, and push all te
    ```
 
    This script will:
-   - Iterate through every subdirectory.
-   - Detect if a `Dockerfile` exists.
+   - Detect all folders containing a `Dockerfile`.
+   - Show exact tag mapping before build/push.
    - Build the image as `hubfly-template-<directory_name>`.
-   - Push it to the configured Docker Hub repository
+   - Push `bonheur15/hubfly-template-<directory_name>:latest`.
 
 ## Adding a New Template
 

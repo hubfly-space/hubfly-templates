@@ -3,35 +3,38 @@ set -e
 
 USERNAME="bonheur15"
 
-# Loop through all directories
-for d in */ ; do
-    # Remove trailing slash
-    DIR_NAME="${d%/}"
-    
-    # Check if Dockerfile exists in the directory
-    if [ -f "$DIR_NAME/Dockerfile" ]; then
-        IMAGE_NAME="hubfly-template-$DIR_NAME"
-        FULL_IMAGE_NAME="$USERNAME/$IMAGE_NAME:latest"
+echo "Scanning templates..."
+mapfile -t TEMPLATE_DIRS < <(find . -maxdepth 2 -mindepth 2 -name Dockerfile -printf '%h\n' | sed 's#^\./##' | sort)
 
-        echo "----------------------------------------------------"
-        echo "Processing $DIR_NAME..."
-        echo "Building $IMAGE_NAME..."
-        
-        # Build
-        docker build -t "$IMAGE_NAME" "./$DIR_NAME"
-        
-        # Tag
-        echo "Tagging as $FULL_IMAGE_NAME..."
-        docker tag "$IMAGE_NAME" "$FULL_IMAGE_NAME"
-        
-        # Push
-        echo "Pushing $FULL_IMAGE_NAME..."
-        docker push "$FULL_IMAGE_NAME"
-        
-        echo "Done with $DIR_NAME!"
-    else
-        echo "Skipping $DIR_NAME (no Dockerfile found)"
-    fi
+if [ ${#TEMPLATE_DIRS[@]} -eq 0 ]; then
+    echo "No templates found (no Dockerfiles present)."
+    exit 1
+fi
+
+echo "Templates detected:"
+for DIR_NAME in "${TEMPLATE_DIRS[@]}"; do
+    IMAGE_NAME="hubfly-template-$DIR_NAME"
+    FULL_IMAGE_NAME="$USERNAME/$IMAGE_NAME:latest"
+    echo "- $DIR_NAME -> $FULL_IMAGE_NAME"
+done
+
+for DIR_NAME in "${TEMPLATE_DIRS[@]}"; do
+    IMAGE_NAME="hubfly-template-$DIR_NAME"
+    FULL_IMAGE_NAME="$USERNAME/$IMAGE_NAME:latest"
+
+    echo "----------------------------------------------------"
+    echo "Processing $DIR_NAME..."
+    echo "Building $IMAGE_NAME..."
+
+    docker build -t "$IMAGE_NAME" "./$DIR_NAME"
+
+    echo "Tagging as $FULL_IMAGE_NAME..."
+    docker tag "$IMAGE_NAME" "$FULL_IMAGE_NAME"
+
+    echo "Pushing $FULL_IMAGE_NAME..."
+    docker push "$FULL_IMAGE_NAME"
+
+    echo "Done with $DIR_NAME!"
 done
 
 echo "----------------------------------------------------"
