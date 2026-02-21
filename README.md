@@ -9,6 +9,10 @@ hubfly-templates/
 ├── nodejs/           # Node.js (Express) starter template
 │   ├── Dockerfile
 │   └── index.js
+├── nextjs/           # Next.js starter template
+│   ├── Dockerfile
+│   ├── package.json
+│   └── app/
 ├── python/           # Python (Flask) starter template
 │   ├── Dockerfile
 │   ├── app.py
@@ -27,6 +31,11 @@ A simple Express.js server running on port `3000`.
 A simple Flask server running on port `8000`.
 - **Base Image:** `python:3.9-slim`
 - **Port:** 8000
+
+### 3. Next.js
+A Next.js App Router template with API routes, server actions, tests, and image optimization.
+- **Base Image:** `node:20-alpine`
+- **Port:** 3000
 
 ## Usage
 
