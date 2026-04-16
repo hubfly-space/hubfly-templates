@@ -51,6 +51,11 @@ The deployment script publishes these tags:
 - `bonheur15/hubfly-template-nextjs:latest`
 - `bonheur15/hubfly-template-static-html:latest`
 
+If a template contains a `tags/<tag-name>/` folder, the script also publishes extra tags for that template. For example:
+
+- `static-html/tags/landing/index.html` -> `bonheur15/hubfly-template-static-html:landing`
+- `static-html/tags/docs/index.html` -> `bonheur15/hubfly-template-static-html:docs`
+
 ## Usage
 
 ### Prerequisites
@@ -73,8 +78,32 @@ Use the included `deploy.sh` script to automatically build, tag, and push all te
    This script will:
    - Detect all folders containing a `Dockerfile`.
    - Show exact tag mapping before build/push.
-   - Build the image as `hubfly-template-<directory_name>`.
-   - Push `bonheur15/hubfly-template-<directory_name>:latest`.
+   - Build `:latest` from the base template directory.
+   - Build extra tags from `tags/<tag-name>/` overlays when present.
+   - Push `bonheur15/hubfly-template-<directory_name>:latest` and any extra template tags.
+
+### Publishing Different Content Per Tag
+
+For `static-html`, keep the shared site files in `static-html/` and add tag-specific overrides under `static-html/tags/<tag-name>/`.
+
+Example:
+
+```text
+static-html/
+├── Dockerfile
+├── index.html
+└── tags/
+    ├── landing/
+    │   └── index.html
+    └── docs/
+        └── index.html
+```
+
+What gets published:
+
+- Base `static-html/` content -> `bonheur15/hubfly-template-static-html:latest`
+- `static-html/tags/landing/` overlaid on top of the base content -> `bonheur15/hubfly-template-static-html:landing`
+- `static-html/tags/docs/` overlaid on top of the base content -> `bonheur15/hubfly-template-static-html:docs`
 
 ## Adding a New Template
 
